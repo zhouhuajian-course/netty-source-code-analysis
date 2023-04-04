@@ -42,5 +42,10 @@
       <version>1.18.26</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-all</artifactId>
+      <version>4.1.90.Final</version>
+    </dependency>
   </dependencies>
 </project>
