@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerChannel> {
-
+    // 内部日志
     private static final InternalLogger logger = InternalLoggerFactory.getInstance(ServerBootstrap.class);
 
     // The order in which child ChannelOptions are applied is important they may depend on each other for validation

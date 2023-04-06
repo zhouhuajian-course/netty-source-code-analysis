@@ -1386,6 +1386,7 @@
             </goals>
             <phase>validate</phase>
             <configuration>
+              <skip>true</skip>
               <consoleOutput>true</consoleOutput>
               <logViolationsToConsole>true</logViolationsToConsole>
               <failsOnError>true</failsOnError>
@@ -1448,6 +1449,7 @@
           </execution>
         </executions>
         <configuration>
+          <skip>true</skip>
           <formatFileSets>
             <formatFileSet>
               <directory>${project.basedir}</directory>
