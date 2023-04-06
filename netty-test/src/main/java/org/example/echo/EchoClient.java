@@ -9,11 +9,12 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.util.CharsetUtil;
+import lombok.extern.slf4j.Slf4j;
 
 public class EchoClient {
-    static final String HOST = System.getProperty("host", "127.0.0.1");
-    static final int PORT = Integer.parseInt(System.getProperty("port", "8007"));
-    static final int SIZE = Integer.parseInt(System.getProperty("size", "256"));
+
+    // static final int SIZE = Integer.parseInt(System.getProperty("size", "256"));
 
     public static void main(String[] args) throws Exception {
         // Configure the client.
@@ -32,7 +33,7 @@ public class EchoClient {
                  }
              });
             // Start the client.
-            ChannelFuture f = b.connect(HOST, PORT).sync();
+            ChannelFuture f = b.connect("127.0.0.1", 8007).sync();
             // Wait until the connection is closed.
             f.channel().closeFuture().sync();
         } finally {
@@ -42,15 +43,18 @@ public class EchoClient {
     }
 }
 
+@Slf4j
 class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
     private final ByteBuf firstMessage;
 
     public EchoClientHandler() {
-        firstMessage = Unpooled.buffer(EchoClient.SIZE);
-        for (int i = 0; i < firstMessage.capacity(); i++) {
-            firstMessage.writeByte((byte) i);
-        }
+        // firstMessage = Unpooled.buffer(EchoClient.SIZE);
+        // for (int i = 0; i < firstMessage.capacity(); i++) {
+        //     firstMessage.writeByte((byte) i);
+        // }
+        firstMessage = Unpooled.buffer(3);
+        firstMessage.writeBytes(new byte[]{97, 98, 99});
     }
 
     @Override
@@ -60,12 +64,14 @@ class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ctx.write(msg);
+        // ctx.write(msg);
+        log.debug("Channel 读数据");
+        log.debug("{}", ((ByteBuf) msg).toString(CharsetUtil.UTF_8));
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        ctx.flush();
+        // ctx.flush();
     }
 
     @Override
