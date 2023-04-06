@@ -9,7 +9,7 @@ https://github.com/netty/netty
 ## 重要组件
 
 1. ServerBootstrap、BootStrap 启动类，门面类，门面设计模式，这个类是方便用户快速使用Netty的门面类
-2. Channel 通道类，如果是服务端，那么Channel是服务端Channel，或者时服务端和客户端的Channel通道，如果是客户端Channel是客户端与服务端的通道
+2. Channel 通道类，如果是服务端，那么Channel是NioServerSocketChannel，或者时服务端和客户端的通道NioSocketChannel，如果是客户端Channel是客户端与服务端的通道NioSocketChannel
 3. Pipeline 每个Channel都有一个流水线，每个流水线有多个处理器，当Channel有事件发生时，每个事件会经过流水线的每一个处理器，
    事件的触发由pipeline对象触发，例如pipeline.fireChannelRegistered();
    ServerSocketChannel会有一个Pipeline，
