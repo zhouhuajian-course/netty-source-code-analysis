@@ -4,7 +4,7 @@ https://netty.io/
 
 https://github.com/netty/netty
 
-![img.png](readme/component.png)
+![](readme/component.png)
 
 ## 重要组件
 
