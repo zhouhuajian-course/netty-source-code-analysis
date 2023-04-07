@@ -6,21 +6,45 @@ https://github.com/netty/netty
 
 ![](readme/component.png)
 
+## Jdk Future 和 Netty Future Promise 区别
+
+都可以理解为是装载线程结果的容器
+
+Jdk Future 当前线程同步等待另一个线程结果   future.get()  
+Netty Future 当前线程同步或异步等待另一个线程结果 future.get() future.addListener()  
+Netty Promise 当前线程同步或异步等待另一个线程结果，跟future不同的是，它可以主动设置另一个线程的结果
+
+Future 一般被动创建，被动设置结果
+Promise 一般主动创建，主动设置结果
+
+注：在异常处理上也会有差别 
+
+## execute 和 submit 区别
+
+execute 只可提交 Runnable 没返回值任务，而且方法调用没有返回值
+submit 可提交 Runnable 没返回值任务，也可以提交 Callable 有返回值任务，方法调用返回Future对象  
+
 ## 重要组件
 
 1. ServerBootstrap、BootStrap 启动类，门面类，门面设计模式，这个类是方便用户快速使用Netty的门面类
 2. Channel 通道类，如果是服务端，那么Channel是NioServerSocketChannel，或者时服务端和客户端的通道NioSocketChannel，如果是客户端Channel是客户端与服务端的通道NioSocketChannel
 3. Pipeline 每个Channel都有一个流水线，每个流水线有多个处理器，当Channel有事件发生时，每个事件会经过流水线的每一个处理器，
-   事件的触发由pipeline对象触发，例如pipeline.fireChannelRegistered();
-   ServerSocketChannel会有一个Pipeline，
-   每个服务端与客户端的SocketChannel也有一个Pipeline
-   pipeline使用链表方式连接所有handler的上下文对象，
-   每个pipeline都有初始的head和tail
-   调用pipeline.addLast()，会往head和tail中间以链表的方式追加
-   始终保证head在链表最开始，tail在链表最后面，
-   也就是始终保证head先执行，tail最后执行，中间的其他Handler按addLast顺序依次执行，最后一个自定义的Handler的Context的next会指向tail
-4. Handler 流水线里面的事件处理器
-5. EventLoopGroup 事件循环组，多线程执行器
+   事件的触发由pipeline对象触发，例如pipeline.fireChannelRegistered();  
+   ServerSocketChannel会有一个Pipeline，  
+   每个服务端与客户端的SocketChannel也有一个Pipeline  
+   pipeline使用链表方式连接所有handler的上下文对象，  
+   每个pipeline都有初始的head和tail  
+   调用pipeline.addLast()，会往head和tail中间以链表的方式追加  
+   始终保证head在链表最开始，tail在链表最后面，  
+   也就是始终保证head先执行，tail最后执行，中间的其他Handler按addLast顺序依次执行，最后一个自定义的Handler的Context的next会指向tail  
+   head -> h1 -> h2 -> h3 -> h4 -> h5 -> h6 -> tail  
+   双向链表  
+   入站时，例如有ChannelRead事件，数据会从head一直流向tail，除非中间断开  
+   出站时，例如有write事件，数据会从tail一直流向head，除非中间断开  
+          如果是channel.write，会从tail一直流向head  
+          如果是context.write，会从当前的处理器一直流向head  
+4. Handler 流水线里面的事件处理器，分入站、出站
+5. EventLoopGroup 事件循环组，里面有多个EventLoop对象，每个EventLoop对象绑定一个线程 类比JDK ExecutorService
 
 ## 服务端启动、接受客户端连接、读取消息、响应消息、断开连接源码
 
