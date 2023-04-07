@@ -6,6 +6,29 @@ https://github.com/netty/netty
 
 ![](readme/component.png)
 
+## Inbound入站 和 Outbound 出站
+
+ch.write 从tail处理器，往回传write事件
+
+```text
+11:47:52.568 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- ChannelHandlerContext(h1, [id: 0xa2d8a4c2, L:/127.0.0.1:8080 - R:/127.0.0.1:54145])
+11:47:55.164 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 1
+11:47:55.165 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 2
+11:47:55.165 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 3 TestPipeline.Student(name=zhangsan) class org.example.TestPipeline$Student
+11:47:55.166 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 6
+11:47:55.166 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 5
+11:47:55.166 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 4
+```
+
+ctx.write 从当前处理器，往回传write事件
+
+```text
+11:49:34.965 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- ChannelHandlerContext(h1, [id: 0xdb7a686d, L:/127.0.0.1:8080 - R:/127.0.0.1:54519])
+11:49:36.958 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 1
+11:49:36.959 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 2
+11:49:36.960 [nioEventLoopGroup-3-1] DEBUG org.example.TestPipeline -- 3 TestPipeline.Student(name=zhangsan) class org.example.TestPipeline$Student
+```
+
 ## Jdk Future 和 Netty Future Promise 区别
 
 都可以理解为是装载线程结果的容器
