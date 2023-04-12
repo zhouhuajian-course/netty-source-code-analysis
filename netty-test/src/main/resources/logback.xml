@@ -8,7 +8,7 @@
     </appender>
 
     <!-- 根Logger -->
-    <root level="ERROR">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
     </root>
     <!-- 代码 logger 不向上传递，否者 root logger 会往控制台再输出一次 -->
